@@ -89,6 +89,7 @@ export default async function handle(
       data: {
         date: new Date(datetime),
         layoutId: layout.id,
+        courseId: courseId,
         userId: user.id,
         scores: {
           create: scoreObjects,

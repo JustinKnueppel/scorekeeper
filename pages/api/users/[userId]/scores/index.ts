@@ -2,6 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../../../lib/prisma";
 import { getNumericId } from "../../../../../lib/util";
 
+interface ScoreFilter {
+  userId: number;
+  courseId?: number;
+}
+
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
@@ -16,8 +21,18 @@ export default async function handle(
     if (!user) {
       return res.status(404).end();
     }
+
+    const filter: ScoreFilter = {
+      userId,
+    }
+    if (req.query.courseId) {
+      const courseId = getNumericId(req.query.courseId);
+      if (courseId) {
+        filter.courseId = courseId
+      }
+    }
     const scores = await prisma.scoreCard.findMany({
-      where: { userId: user.id },
+      where: filter,
       include: {
         layout: true,
         scores: { include: { hole: true } },

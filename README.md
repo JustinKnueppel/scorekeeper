@@ -29,6 +29,14 @@ npm run dev
 
 ## Generate API docs
 
+To edit the OpenAPI file, use Docker to run the `swagger-editor`. Then navigate to `localhost:8080` and import the `openapi.yaml` file.
+
+```bash
+docker run -d -p 8080:8080 swaggerapi/swagger-editor
+```
+
+To generate the HTML version of the docs, run the following command.
+
 ```bash
 npx redoc-cli bundle -o openapi.html openapi.yaml
 ```

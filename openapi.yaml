@@ -192,6 +192,12 @@ paths:
           in: path
           required: true
           description: ID of an existing user.
+        - schema:
+            type: integer
+          name: courseId
+          in: query
+          required: false
+          description: ID of a course on which to filter.
           
   /api/users/{userId}/scores/{scoreId}:
     get:

@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../lib/auth";
 
 const prisma = new PrismaClient();
@@ -93,6 +93,7 @@ async function seed() {
         create: [
           {
             layoutId: 1,
+            courseId: 1,
             date: new Date(Date.UTC(2021, 8, 1, 8, 0)),
             scores: {
               create: [

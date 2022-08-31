@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { decodeJWT } from "../../../../lib/auth";
 import prisma from "../../../../lib/prisma";
 import { getNumericId } from "../../../../lib/util";
 
@@ -29,6 +30,26 @@ export default async function handle(
   }
 
   if (req.method === "GET") {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(403).send("A token is required for authentication");
+    }
+    const [type, token] = authHeader.split(" ");
+    if (type.toLowerCase() != "bearer") {
+      return res
+        .status(403)
+        .send("A bearer token is required for authentication");
+    }
+
+    const decoded = decodeJWT(token);
+    if (!decoded) {
+      return res.status(401).send("Invalid Token");
+    }
+
+    if (decoded.userId !== userId) {
+      return res.status(401).send("Unauthorized");
+    }
+
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (user) {
       return res.status(200).json(user);

@@ -36,7 +36,7 @@ export default async function handle(
     }
     console.log(`Authenticated user ${user.email}`);
 
-    const jwt = getJWT({ id: user.id, username: user.username });
+    const jwt = getJWT({ userId: user.id, username: user.username });
 
     return res.status(200).json({
       username: user.username,
